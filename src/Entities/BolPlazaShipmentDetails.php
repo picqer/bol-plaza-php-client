@@ -22,6 +22,8 @@ namespace Picqer\BolPlazaClient\Entities;
  */
 class BolPlazaShipmentDetails extends BaseModel {
 
+    protected $xmlEntityName = 'ShipmentDetails';
+
     protected $attributes = [
         'SalutationCode',
         'FirstName',

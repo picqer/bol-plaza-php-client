@@ -16,6 +16,8 @@ namespace Picqer\BolPlazaClient\Entities;
  */
 class BolPlazaOpenOrderItem extends BaseModel {
 
+    protected $xmlEntityName = 'OpenOrderItem';
+
     protected $attributes = [
         'OrderItemId',
         'EAN',

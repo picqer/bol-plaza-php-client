@@ -11,6 +11,8 @@ namespace Picqer\BolPlazaClient\Entities;
  */
 class BolPlazaBuyer extends BaseModel {
 
+    protected $xmlEntityName = 'Buyer';
+
     protected $attributes = [];
 
     protected $nestedEntities = [

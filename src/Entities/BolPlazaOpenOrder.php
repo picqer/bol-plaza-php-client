@@ -15,6 +15,8 @@ namespace Picqer\BolPlazaClient\Entities;
  */
 class BolPlazaOpenOrder extends BaseModel {
 
+    protected $xmlEntityName = 'OpenOrder';
+
     protected $attributes = [
         'OrderId',
         'DateTimeCustomer',
@@ -32,6 +34,4 @@ class BolPlazaOpenOrder extends BaseModel {
             'entityClass' => 'BolPlazaOpenOrderItem'
         ]
     ];
-
-    public $test;
 }

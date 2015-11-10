@@ -59,6 +59,17 @@ class BolPlazaClient
         return $openOrders;
     }
 
+    public function processShipments($shipments)
+    {
+        $url = '/services/rest/orders/v1/process';
+
+        $xmlData = BolPlazaDataParser::createXmlFromEntities($shipments, 'ProcessOrders', ['Shipments']);
+
+        $apiResult = $this->makeRequest('POST', $url, $xmlData);
+
+        return $apiResult;
+    }
+
     /**
      * Makes the request to the server and processes errors
      *

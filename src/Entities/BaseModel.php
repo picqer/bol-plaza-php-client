@@ -4,6 +4,8 @@ namespace Picqer\BolPlazaClient\Entities;
 
 abstract class BaseModel
 {
+    protected $xmlEntityName = 'BaseModel';
+
     /**
      * @var array List of all the attributes of this model
      */
@@ -34,18 +36,14 @@ abstract class BaseModel
      */
     protected $childEntitiesData = [];
 
+    /**
+     * @var array List of attributes that deserve special treatment from XML creator
+     */
+    protected $specialAttributes = [];
+
     public function __construct(array $attributes = [])
     {
         $this->fillFromArray($attributes);
-    }
-
-    /**
-     * Get all current data set in this model
-     * @return array
-     */
-    public function getAttributesData()
-    {
-        return $this->attributesData;
     }
 
     /**
@@ -166,6 +164,15 @@ abstract class BaseModel
      */
     public function __debugInfo()
     {
+        return $this->getData();
+    }
+
+    /**
+     * Get all current data set in this model
+     * @return array
+     */
+    public function getData()
+    {
         $result = [];
         foreach ($this->attributes as $attribute)
         {
@@ -183,5 +190,52 @@ abstract class BaseModel
         }
 
         return $result;
+    }
+
+    /**
+     * Get the XML entity name for building XML
+     * @return string
+     */
+    public function getXmlEntityName()
+    {
+        return $this->xmlEntityName;
+    }
+
+    /**
+     * Get the plural of the XML entity name for building XML groups
+     * @return array|null|string
+     */
+    public function getXmlEntityPluralName()
+    {
+        if (isset($this->xmlEntityPluralName))
+        {
+            return $this->xmlEntityPluralName;
+        }
+
+        return $this->xmlEntityName . 's';
+    }
+
+    /**
+     * Check if attribute is special
+     * @param $key
+     * @return bool
+     */
+    public function isSpecialAttribute($key)
+    {
+        return array_key_exists($key, $this->specialAttributes);
+    }
+
+    /**
+     * Get details of special attribute
+     * @param $key
+     * @return null|array
+     */
+    public function getSpecialAttribute($key)
+    {
+        if ( ! $this->isSpecialAttribute($key)) {
+            return null;
+        }
+
+        return $this->specialAttributes[$key];
     }
 }
