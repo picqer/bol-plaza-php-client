@@ -1,4 +1,22 @@
 {
+  "name": "picqer/bol-plaza-php-client",
+  "type": "library",
+  "description": "A PHP Client for the BOL.com Plaza API",
+  "keywords": [
+    "api",
+    "php",
+    "bol.com",
+    "bol",
+    "plaza"
+  ],
+  "homepage": "http://github.com/picqer/bol-plaza-php-client",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Casper Bakker",
+      "email": "info@picqer.com"
+    }
+  ],
   "require": {
     "php": ">=5.5.9"
   },
