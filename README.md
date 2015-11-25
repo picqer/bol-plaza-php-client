@@ -1,8 +1,13 @@
 # Bol.com Plaza API client for PHP
-Work in progress, but this will be an open source PHP client for the Bol.com Plaza API.
+Work in progress, but this an open source PHP client for the [Bol.com Plaza API](https://developers.bol.com/documentatie/plaza-api/).
 
 ## Installation
-WIP: Will be on Packagist
+Get it with [composer](https://getcomposer.org)
+
+Run the command:
+```
+composer require picqer/bol-plaza-php-client
+```
 
 ## Example: get open orders
 ```php
