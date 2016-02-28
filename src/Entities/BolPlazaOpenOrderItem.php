@@ -21,6 +21,7 @@ class BolPlazaOpenOrderItem extends BaseModel {
     protected $attributes = [
         'OrderItemId',
         'EAN',
+        'ReferenceCode',
         'Title',
         'Quantity',
         'Price',
