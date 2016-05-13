@@ -36,9 +36,16 @@ class BolPlazaDataParser
      * @param SimpleXMLElement $xmlElement
      * @return BaseModel
      */
-    public static function createEntityFromResponse($entity, SimpleXMLElement $xmlElement)
+    public static function createEntityFromResponse($entity, $xml)
     {
         $entity = 'Picqer\\BolPlazaClient\\Entities\\' . $entity;
+        if ($xml instanceof SimpleXMLElement) {
+            $xmlElement = $xml;
+        } else {
+            $model = new $entity;
+            $xmlElement = self::parseXmlResponse($xml, $model->getXmlNamespace());
+        }
+
         $object = self::fillModelFromXmlObject(new $entity, $xmlElement);
         return $object;
     }
@@ -73,14 +80,17 @@ class BolPlazaDataParser
      * Parse a namespaced XML response and turn it into a SimpleXMLElement with the root data
      *
      * @param string $xmlString
+     * @param array $namespaces
      * @return SimpleXMLElement
      */
-    public static function parseXmlResponse($xmlString)
+    public static function parseXmlResponse($xmlString, $namespace = '')
     {
         $document = new SimpleXMLElement($xmlString);
-        $namespaces = $document->getNamespaces(true);
-
-        return $document->children($namespaces['bns']);
+        if(!empty($namespace)) {
+          $namespaces = $document->getNamespaces(true);
+          return $document->children($namespaces[$namespace]);
+        }
+        return $document->children();
     }
 
     /**
@@ -93,8 +103,35 @@ class BolPlazaDataParser
      */
     public static function createXmlFromEntities(array $entities, $rootElement, array $subElements = [])
     {
+        return self::createNamespacedXmlFromEntities('https://plazaapi.bol.com/services/xsd/v2/plazaapi.xsd', $entities, $rootElement, $subElements);
+    }
+
+    /**
+     * Create XML string for collection of entities/models, uses the offer api
+     *
+     * @param array $entities
+     * @param string $rootElement
+     * @param array $subElements
+     * @return mixed
+     */
+    public static function createOfferXmlFromEntities(array $entities, $rootElement, array $subElements = [])
+    {
+        return self::createNamespacedXmlFromEntities('http://plazaapi.bol.com/offers/xsd/api-1.0.xsd', $entities, $rootElement, $subElements);
+    }
+
+    /**
+     * Create XML string for collection of entities/models
+     *
+     * @param string $namespace
+     * @param array $entities
+     * @param string $rootElement
+     * @param array $subElements
+     * @return mixed
+     */
+    protected static function createNamespacedXmlFromEntities($namespace, array $entities, $rootElement, array $subElements = [])
+    {
         $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
-<' . $rootElement . ' xmlns="http://plazaapi.bol.com/services/xsd/plazaapiservice-1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://plazaapi.bol.com/services/xsd/plazaapiservice-1.0.xsd plazaapiservice-1.0.xsd "></' . $rootElement . '>');
+            <' . $rootElement . ' xmlns="' . $namespace . '"></' . $rootElement . '>');
 
         $subXml = $xml;
         foreach ($subElements as $subElement)
@@ -110,6 +147,45 @@ class BolPlazaDataParser
     }
 
     /**
+     * Create XML string for an entity
+     *
+     * @param BaseModel $entity
+     * @return mixed
+     */
+    public static function createXmlFromEntity($entity)
+    {
+        return self::createNamespacedXmlFromEntity('https://plazaapi.bol.com/services/xsd/v2/plazaapi.xsd', $entity);
+    }
+
+    /**
+     * Create XML string for an entity, using the offer api
+     *
+     * @param BaseModel $entity
+     * @return mixed
+     */
+    public static function createOfferXmlFromEntity($entity)
+    {
+        return self::createNamespacedXmlFromEntity('http://plazaapi.bol.com/offers/xsd/api-1.0.xsd', $entity);
+    }
+
+    /**
+     * Create XML string for an entity
+     *
+     * @param BaseModel $entity
+     * @return mixed
+     */
+    protected static function createNamespacedXmlFromEntity($namespace, $entity)
+    {
+        $rootElement = $entity->getXmlEntityName();
+        $xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?>
+            <' . $rootElement . ' xmlns="' . $namespace . '"></' . $rootElement . '>');
+
+        $entityData = $entity->getData();
+        self::fillEntityData($entityData, $xml);
+       return $xml->asXML();
+    }
+
+    /**
      * @param BaseModel|array $entity
      * @param SimpleXMLElement $xml
      */
@@ -117,29 +193,31 @@ class BolPlazaDataParser
     {
         $entityData = $entity->getData();
         $xmlEntity = $xml->addChild($entity->getXmlEntityName());
+        self::fillEntityData($entityData, $xmlEntity);
+    }
 
+    /**
+     * @param BaseModel|array $entity
+     * @param SimpleXMLElement $xml
+     */
+    protected static function fillEntityData($entityData, &$xmlEntity)
+    {
         foreach ($entityData as $key => $value) {
-            if (is_string($value) || is_numeric($value))
-            {
+            if (is_string($value) || is_numeric($value)) {
                 // Attributes
                 $xmlEntity->addChild($key, $value);
-            } elseif ($value instanceof BaseModel)
-            {
+            } elseif ($value instanceof BaseModel) {
                 // Nested entities
                 self::getXmlForSubelements($value, $xmlEntity);
-            } elseif (is_array($value) && $entity->isSpecialAttribute($key))
-            {
+            } elseif (is_array($value) && $entity->isSpecialAttribute($key)) {
                 $specialAttribute = $entity->getSpecialAttribute($key);
-                if ($specialAttribute['type'] == 'array')
-                {
+                if ($specialAttribute['type'] == 'array') {
                     $xmlSubEntity = $xmlEntity->addChild($key);
-                    foreach ($value as $subValue)
-                    {
+                    foreach ($value as $subValue) {
                         $xmlSubEntity->addChild($specialAttribute['childName'], $subValue);
                     }
                 }
-            } elseif (is_array($value))
-            {
+            } elseif (is_array($value)) {
                 // Child entities
                 /* @var $subEntity BaseModel */
                 foreach ($value as $subEntity) {

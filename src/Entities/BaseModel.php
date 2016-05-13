@@ -5,6 +5,7 @@ namespace Picqer\BolPlazaClient\Entities;
 abstract class BaseModel
 {
     protected $xmlEntityName = 'BaseModel';
+    protected $xmlNamespace = '';
 
     /**
      * @var array List of all the attributes of this model
@@ -199,6 +200,14 @@ abstract class BaseModel
     public function getXmlEntityName()
     {
         return $this->xmlEntityName;
+    }
+
+    /**
+     * Get the XML namespace for building XML
+     */
+    public function getXmlNamespace()
+    {
+        return $this->xmlNamespace;
     }
 
     /**
