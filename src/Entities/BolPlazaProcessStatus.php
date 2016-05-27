@@ -28,11 +28,4 @@ class BolPlazaProcessStatus extends BaseModel {
         'status',
         'createTimestamp'
     ];
-
-    // protected $childEntities = [
-    //     'Links' => [
-    //         'childName' => 'link',
-    //         'entityClass' => 'BolPlazaOrderItem'
-    //     ]
-    // ];
 }

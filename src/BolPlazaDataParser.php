@@ -209,25 +209,12 @@ class BolPlazaDataParser
             } elseif ($value instanceof BaseModel) {
                 // Nested entities
                 self::getXmlForSubelements($value, $xmlEntity);
-            } elseif (is_array($value) && $entity->isSpecialAttribute($key)) {
-                $specialAttribute = $entity->getSpecialAttribute($key);
-                if ($specialAttribute['type'] == 'array') {
-                    $xmlSubEntity = $xmlEntity->addChild($key);
-                    foreach ($value as $subValue) {
-                        $xmlSubEntity->addChild($specialAttribute['childName'], $subValue);
-                    }
-                }
             } elseif (is_array($value)) {
                 // Child entities
                 /* @var $subEntity BaseModel */
                 foreach ($value as $subEntity) {
-                    if ( ! isset($addedExtraChild)) {
-                        // Create extra XML child for child entities
-                        $xmlSubEntity = $xmlEntity->addChild($subEntity->getXmlEntityPluralName());
-                    }
                     self::getXmlForSubelements($subEntity, $xmlSubEntity);
                 }
-                unset($addedExtraChild);
             }
         }
     }
