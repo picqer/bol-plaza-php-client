@@ -27,6 +27,9 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(count($orders), 2);
         $this->assertEquals(count($orders[0]->OrderItems), 1);
         $this->assertEquals($orders[0]->OrderItems[0]->OrderItemId, '123');
+        $this->assertEquals($orders[0]->CustomerDetails->ShipmentDetails->HousenumberExtended, 'bis');
+        $this->assertEquals($orders[0]->CustomerDetails->ShipmentDetails->AddressSupplement, '3 hoog achter');
+        $this->assertEquals($orders[0]->CustomerDetails->ShipmentDetails->ExtraAddressInformation, 'extra adres info');
         $this->assertEquals(count($orders[1]->OrderItems), 1);
         $this->assertEquals($orders[1]->OrderItems[0]->OrderItemId, '123');
     }
