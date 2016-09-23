@@ -8,8 +8,8 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $publicKey = $_ENV['PUB'];
-        $privateKey = $_ENV['PRIVKEY'];
+        $publicKey = getenv('PUB');
+        $privateKey = getenv('PRIVKEY');
 
         $this->client = new Wienkit\BolPlazaClient\BolPlazaClient($publicKey, $privateKey);
         $this->client->setTestMode(true);
