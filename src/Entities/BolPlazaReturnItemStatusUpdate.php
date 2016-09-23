@@ -1,10 +1,10 @@
 <?php
 
-namespace Picqer\BolPlazaClient\Entities;
+namespace Wienkit\BolPlazaClient\Entities;
 
 /**
  * Class BolPlazaReturnItemStatusUpdate
- * @package Picqer\BolPlazaClient\Entities
+ * @package Wienkit\BolPlazaClient\Entities
  *
  * @param string $StatusReason
  * @param string $QuantityReturned

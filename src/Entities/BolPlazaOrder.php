@@ -1,10 +1,10 @@
 <?php
 
-namespace Picqer\BolPlazaClient\Entities;
+namespace Wienkit\BolPlazaClient\Entities;
 
 /**
  * Class BolPlazaOrder
- * @package Picqer\BolPlazaClient\Entities
+ * @package Wienkit\BolPlazaClient\Entities
  *
  * @property string $OrderId
  * @property string $DateTimeCustomer

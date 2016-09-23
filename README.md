@@ -6,7 +6,7 @@ Get it with [composer](https://getcomposer.org)
 
 Run the command:
 ```
-composer require picqer/bol-plaza-php-client
+composer require wienkit/bol-plaza-php-client
 ```
 
 ## Example: get open orders
@@ -18,7 +18,7 @@ require __DIR__ . '/vendor/autoload.php';
 $publickey = '--YOUR PUBLIC KEY--';
 $privatekey = '--YOUR PRIVATE KEY--';
 
-$client = new Picqer\BolPlazaClient\BolPlazaClient($publickey, $privatekey);
+$client = new Wienkit\BolPlazaClient\BolPlazaClient($publickey, $privatekey);
 
 $orders = $client->getOrders();
 

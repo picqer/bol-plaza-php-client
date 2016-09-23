@@ -1,8 +1,8 @@
 <?php
 
-namespace Picqer\BolPlazaClient;
+namespace Wienkit\BolPlazaClient;
 
-use Picqer\BolPlazaClient\Entities\BaseModel;
+use Wienkit\BolPlazaClient\Entities\BaseModel;
 use SimpleXMLElement;
 
 class BolPlazaDataParser
@@ -38,7 +38,7 @@ class BolPlazaDataParser
      */
     public static function createEntityFromResponse($entity, $xml)
     {
-        $entity = 'Picqer\\BolPlazaClient\\Entities\\' . $entity;
+        $entity = 'Wienkit\\BolPlazaClient\\Entities\\' . $entity;
         if ($xml instanceof SimpleXMLElement) {
             $xmlElement = $xml;
         } else {

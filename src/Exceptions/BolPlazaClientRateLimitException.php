@@ -1,5 +1,5 @@
 <?php
 
-namespace Picqer\BolPlazaClient\Exceptions;
+namespace Wienkit\BolPlazaClient\Exceptions;
 
 class BolPlazaClientRateLimitException extends BolPlazaClientException {}

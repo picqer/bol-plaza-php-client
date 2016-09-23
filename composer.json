@@ -1,5 +1,5 @@
 {
-  "name": "picqer/bol-plaza-php-client",
+  "name": "wienkit/bol-plaza-php-client",
   "type": "library",
   "description": "A PHP Client for the BOL.com Plaza API",
   "keywords": [
@@ -9,12 +9,12 @@
     "bol",
     "plaza"
   ],
-  "homepage": "http://github.com/picqer/bol-plaza-php-client",
+  "homepage": "http://github.com/wienkit/bol-plaza-php-client",
   "license": "MIT",
   "authors": [
     {
-      "name": "Casper Bakker",
-      "email": "info@picqer.com"
+      "name": "Mark Wienk",
+      "email": "info@wienkit.com"
     }
   ],
   "require": {
@@ -25,7 +25,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Picqer\\BolPlazaClient\\": "src/"
+      "Wienkit\\BolPlazaClient\\": "src/"
     }
   }
 }

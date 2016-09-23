@@ -1,14 +1,17 @@
 <?php
 class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Wienkit\BolPlazaClient\BolPlazaClient
+     */
     private $client;
 
     public function setUp()
     {
-        $publickey = '-- ENTER YOUR PUBLIC KEY --';
-        $privatekey = '-- ENTER YOUR PRIVATE KEY --';
+        $publicKey = $_ENV['PUB'];
+        $privateKey = $_ENV['PRIVKEY'];
 
-        $this->client = new Picqer\BolPlazaClient\BolPlazaClient($publickey, $privatekey);
+        $this->client = new Wienkit\BolPlazaClient\BolPlazaClient($publicKey, $privateKey);
         $this->client->setTestMode(true);
     }
 
@@ -20,8 +23,9 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-      * @depends testOrderRetrieve
-      */
+     * @param array $orders
+     * @depends testOrderRetrieve
+     */
     public function testOrdersComplete(array $orders)
     {
         $this->assertEquals(count($orders), 2);
@@ -35,12 +39,13 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-      * @depends testOrderRetrieve
-      */
+     * @depends testOrderRetrieve
+     * @param array $orders
+     */
     public function testOrderItemCancellation(array $orders)
     {
         $orderItem = $orders[0]->OrderItems[0];
-        $cancellation = new Picqer\BolPlazaClient\Entities\BolPlazaCancellation();
+        $cancellation = new Wienkit\BolPlazaClient\Entities\BolPlazaCancellation();
         $cancellation->DateTime = '2011-01-01T12:00:00';
         $cancellation->ReasonCode = 'REQUESTED_BY_CUSTOMER';
         $result = $this->client->cancelOrderItem($orderItem, $cancellation);
@@ -49,12 +54,12 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testProcessShipments()
     {
-        $shipment = new Picqer\BolPlazaClient\Entities\BolPlazaShipmentRequest();
+        $shipment = new Wienkit\BolPlazaClient\Entities\BolPlazaShipmentRequest();
         $shipment->OrderItemId = '123';
         $shipment->ShipmentReference = 'bolplazatest123';
         $shipment->DateTime = date('Y-m-d\TH:i:s');
         $shipment->ExpectedDeliveryDate = date('Y-m-d\TH:i:s');
-        $transport = new Picqer\BolPlazaClient\Entities\BolPlazaTransport();
+        $transport = new Wienkit\BolPlazaClient\Entities\BolPlazaTransport();
         $transport->TransporterCode = 'GLS';
         $transport->TrackAndTrace = '123456789';
         $shipment->Transport = $transport;
@@ -82,11 +87,12 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testGetReturnItems
+     * @param array $returnItems
      */
     public function testHandleReturnItem(array $returnItems)
     {
         $returnItem = $returnItems[0];
-        $returnStatus = new Picqer\BolPlazaClient\Entities\BolPlazaReturnItemStatusUpdate();
+        $returnStatus = new Wienkit\BolPlazaClient\Entities\BolPlazaReturnItemStatusUpdate();
         $returnStatus->StatusReason = 'PRODUCT_RECEIVED';
         $returnStatus->QuantityReturned = '2';
         $result = $this->client->handleReturnItem($returnItem, $returnStatus);
@@ -95,11 +101,12 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testGetShipments
+     * @param array $shipments
      */
     public function testChangeTransport(array $shipments)
     {
         $shipment = $shipments[0];
-        $changeRequest = new Picqer\BolPlazaClient\Entities\BolPlazaChangeTransportRequest();
+        $changeRequest = new Wienkit\BolPlazaClient\Entities\BolPlazaChangeTransportRequest();
         $changeRequest->TransporterCode = '3SNEW941245';
         $changeRequest->TrackAndTrace = 'DPD-BE';
         $result = $this->client->changeTransport($shipment, $changeRequest);
@@ -122,7 +129,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testCreateOffer()
     {
-        $offerCreate = new Picqer\BolPlazaClient\Entities\BolPlazaOfferCreate();
+        $offerCreate = new Wienkit\BolPlazaClient\Entities\BolPlazaOfferCreate();
         $offerCreate->EAN = '0619659077013';
         $offerCreate->Condition = 'NEW';
         $offerCreate->Price = '10.00';
@@ -131,35 +138,47 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
         $offerCreate->Publish = 'true';
         $offerCreate->ReferenceCode = '1234567890';
         $offerCreate->Description = 'This is a new product so this description is of no use.';
-        $result = $this->client->createOffer("1", $offerCreate);
+        return $this->client->createOffer("1", $offerCreate);
     }
 
     public function testUpdateOffer()
     {
-        $offerUpdate = new Picqer\BolPlazaClient\Entities\BolPlazaOfferUpdate();
+        $offerUpdate = new Wienkit\BolPlazaClient\Entities\BolPlazaOfferUpdate();
         $offerUpdate->Price = '12.00';
         $offerUpdate->DeliveryCode = '24uurs-16';
         $offerUpdate->Publish = 'true';
         $offerUpdate->ReferenceCode = '1234567890';
         $offerUpdate->Description = 'This is a new product so this description is of no use.';
-        $result = $this->client->updateOffer("1", $offerUpdate);
+        return $this->client->updateOffer("1", $offerUpdate);
     }
 
     public function testUpdateOfferStock()
     {
-        $stockUpdate = new Picqer\BolPlazaClient\Entities\BolPlazaStockUpdate();
+        $stockUpdate = new Wienkit\BolPlazaClient\Entities\BolPlazaStockUpdate();
         $stockUpdate->QuantityInStock = '2';
-        $result = $this->client->updateOfferStock("1", $stockUpdate);
+        return $this->client->updateOfferStock("1", $stockUpdate);
     }
 
     public function testDeleteOffer()
     {
-        $result = $this->client->deleteOffer("1");
+        return $this->client->deleteOffer("1");
     }
 
     public function testGetOwnOffers()
     {
         $result = $this->client->getOwnOffers();
         $this->assertEquals($result->Url, 'https://test-plazaapi.bol.com/offers/v1/export/offers.csv');
+        return $result->Url;
+    }
+
+    /**
+     * @param $url
+     * @depends testGetOwnOffers
+     */
+    public function testGetOwnOffersResult($url)
+    {
+        $result = $this->client->getOwnOffersResult($url);
+        self::assertNotNull($result);
+        self::assertStringStartsWith("OfferId,", $result);
     }
 }
