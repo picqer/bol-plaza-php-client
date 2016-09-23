@@ -1,4 +1,5 @@
 # Bol.com Plaza API client for PHP
+[![Build Status](https://travis-ci.org/wienkit/bol-plaza-php-client.svg?branch=master)](https://travis-ci.org/wienkit/bol-plaza-php-client)
 [![Latest Stable Version](https://poser.pugx.org/wienkit/bol-plaza-php-client/v/stable)](https://packagist.org/packages/wienkit/bol-plaza-php-client)
 [![Total Downloads](https://poser.pugx.org/wienkit/bol-plaza-php-client/downloads)](https://packagist.org/packages/wienkit/bol-plaza-php-client)
 [![Latest Unstable Version](https://poser.pugx.org/bol-plaza-php-client/v/unstable)](https://packagist.org/packages/wienkit/bol-plaza-php-client)
