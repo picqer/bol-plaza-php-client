@@ -1,4 +1,10 @@
 # Bol.com Plaza API client for PHP
+[![Latest Stable Version](https://poser.pugx.org/wienkit/bol-plaza-php-client/v/stable)](https://packagist.org/packages/wienkit/bol-plaza-php-client)
+[![Total Downloads](https://poser.pugx.org/wienkit/bol-plaza-php-client/downloads)](https://packagist.org/packages/wienkit/bol-plaza-php-client)
+[![Latest Unstable Version](https://poser.pugx.org/bol-plaza-php-client/v/unstable)](https://packagist.org/packages/wienkit/bol-plaza-php-client)
+[![License](https://poser.pugx.org/wienkit/bol-plaza-php-client/license)](https://packagist.org/packages/wienkit/bol-plaza-php-client)
+[![composer.lock](https://poser.pugx.org/wienkit/bol-plaza-php-client/composerlock)](https://packagist.org/packages/wienkit/bol-plaza-php-client)
+
 This is an open source PHP client for the [Bol.com Plaza API](https://developers.bol.com/documentatie/plaza-api/).
 
 ## Installation
