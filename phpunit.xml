@@ -1,7 +1,7 @@
 <phpunit colors="true" strict="true" bootstrap="tests/autoload.php">
     <php>
-        <env name="PHP_PUBKEY" value="***REMOVED***"/>
-        <env name="PHP_PRIVKEY" value="***REMOVED***"/>
+        <env name="PHP_PUBKEY" value="NyqinPAxYfyJCnVGHcKPpwLVMIkVgfFV"/>
+        <env name="PHP_PRIVKEY" value="itCzmkDnscpawvZAwpIysEOZHbEUuFTHZAIpXYuzEzqmslWIytTYjTupUGThpXuRcyQTUUABoykkpkiFUYteYOwuGcXNwpQhyGFMFWKnrEIZDduoeMMOlrLjangQJRjnFqwvGtsMcCEcrrilpjbhgcRYumcOntaxvFUJWnAHOQqdjuUQWIyptALzdZJumSJXHYmOfjsEzSKPWlpQvaEgtmxYeeDJGKeWpcsOeMUWbIFQlBQYAOagEHvlDpYluWao"/>
     </php>
     <testsuites>
         <testsuite name="The project's test suite">
