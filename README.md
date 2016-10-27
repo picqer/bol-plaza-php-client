@@ -27,4 +27,4 @@ var_dump($orders);
 
 See the [tests file](tests/BolPlazaClientTest.php) for more information.
 
-Thanks to @wienkit for migrating this package for the Bol Plaza API V2.
+Thanks to @mwienk for migrating this package for the Bol Plaza API V2.
