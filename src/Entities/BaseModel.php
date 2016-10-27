@@ -1,6 +1,6 @@
 <?php
 
-namespace Wienkit\BolPlazaClient\Entities;
+namespace Picqer\BolPlazaClient\Entities;
 
 abstract class BaseModel
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Wienkit\BolPlazaClient\Entities;
+namespace Picqer\BolPlazaClient\Entities;
 
 /**
  * Class BolPlazaTransporter
- * @package Wienkit\BolPlazaClient\Entities
+ * @package Picqer\BolPlazaClient\Entities
  *
  * @property string $TransporterCode
  * @property string $TrackAndTrace

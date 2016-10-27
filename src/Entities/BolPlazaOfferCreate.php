@@ -1,10 +1,10 @@
 <?php
 
-namespace Wienkit\BolPlazaClient\Entities;
+namespace Picqer\BolPlazaClient\Entities;
 
 /**
  * Class BolPlazaOfferCreate
- * @package Wienkit\BolPlazaClient\Entities
+ * @package Picqer\BolPlazaClient\Entities
  *
  * @property string $EAN
  * @property string $Condition
