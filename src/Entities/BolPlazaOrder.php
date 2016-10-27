@@ -3,35 +3,33 @@
 namespace Picqer\BolPlazaClient\Entities;
 
 /**
- * Class BolPlazaOpenOrder
+ * Class BolPlazaOrder
  * @package Picqer\BolPlazaClient\Entities
  *
  * @property string $OrderId
  * @property string $DateTimeCustomer
  * @property string $DateTimeDropShipper
- * @property string $Paid
  * @property BolPlazaBuyer $Buyer
- * @property array $OpenOrderItems
+ * @property array $OrderItems
  */
-class BolPlazaOpenOrder extends BaseModel {
+class BolPlazaOrder extends BaseModel {
 
-    protected $xmlEntityName = 'OpenOrder';
+    protected $xmlEntityName = 'Order';
 
     protected $attributes = [
         'OrderId',
         'DateTimeCustomer',
-        'DateTimeDropShipper',
-        'Paid',
+        'DateTimeDropShipper'
     ];
 
     protected $nestedEntities = [
-        'Buyer' => 'BolPlazaBuyer'
+        'CustomerDetails' => 'BolPlazaCustomerDetails'
     ];
 
     protected $childEntities = [
-        'OpenOrderItems' => [
-            'childName' => 'OpenOrderItem',
-            'entityClass' => 'BolPlazaOpenOrderItem'
+        'OrderItems' => [
+            'childName' => 'OrderItem',
+            'entityClass' => 'BolPlazaOrderItem'
         ]
     ];
 }
