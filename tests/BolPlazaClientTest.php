@@ -2,7 +2,7 @@
 class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var Wienkit\BolPlazaClient\BolPlazaClient
+     * @var Picqer\BolPlazaClient\BolPlazaClient
      */
     private $client;
 
@@ -11,7 +11,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
         $publicKey = getenv('PHP_PUBKEY');
         $privateKey = getenv('PHP_PRIVKEY');
 
-        $this->client = new Wienkit\BolPlazaClient\BolPlazaClient($publicKey, $privateKey);
+        $this->client = new Picqer\BolPlazaClient\BolPlazaClient($publicKey, $privateKey);
         $this->client->setTestMode(true);
     }
 
@@ -45,7 +45,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
     public function testOrderItemCancellation(array $orders)
     {
         $orderItem = $orders[0]->OrderItems[0];
-        $cancellation = new Wienkit\BolPlazaClient\Entities\BolPlazaCancellation();
+        $cancellation = new Picqer\BolPlazaClient\Entities\BolPlazaCancellation();
         $cancellation->DateTime = '2011-01-01T12:00:00';
         $cancellation->ReasonCode = 'REQUESTED_BY_CUSTOMER';
         $result = $this->client->cancelOrderItem($orderItem, $cancellation);
@@ -54,12 +54,12 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testProcessShipments()
     {
-        $shipment = new Wienkit\BolPlazaClient\Entities\BolPlazaShipmentRequest();
+        $shipment = new Picqer\BolPlazaClient\Entities\BolPlazaShipmentRequest();
         $shipment->OrderItemId = '123';
         $shipment->ShipmentReference = 'bolplazatest123';
         $shipment->DateTime = date('Y-m-d\TH:i:s');
         $shipment->ExpectedDeliveryDate = date('Y-m-d\TH:i:s');
-        $transport = new Wienkit\BolPlazaClient\Entities\BolPlazaTransport();
+        $transport = new Picqer\BolPlazaClient\Entities\BolPlazaTransport();
         $transport->TransporterCode = 'GLS';
         $transport->TrackAndTrace = '123456789';
         $shipment->Transport = $transport;
@@ -92,7 +92,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
     public function testHandleReturnItem(array $returnItems)
     {
         $returnItem = $returnItems[0];
-        $returnStatus = new Wienkit\BolPlazaClient\Entities\BolPlazaReturnItemStatusUpdate();
+        $returnStatus = new Picqer\BolPlazaClient\Entities\BolPlazaReturnItemStatusUpdate();
         $returnStatus->StatusReason = 'PRODUCT_RECEIVED';
         $returnStatus->QuantityReturned = '2';
         $result = $this->client->handleReturnItem($returnItem, $returnStatus);
@@ -106,7 +106,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
     public function testChangeTransport(array $shipments)
     {
         $shipment = $shipments[0];
-        $changeRequest = new Wienkit\BolPlazaClient\Entities\BolPlazaChangeTransportRequest();
+        $changeRequest = new Picqer\BolPlazaClient\Entities\BolPlazaChangeTransportRequest();
         $changeRequest->TransporterCode = '3SNEW941245';
         $changeRequest->TrackAndTrace = 'DPD-BE';
         $result = $this->client->changeTransport($shipment, $changeRequest);
@@ -129,7 +129,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testCreateOffer()
     {
-        $offerCreate = new Wienkit\BolPlazaClient\Entities\BolPlazaOfferCreate();
+        $offerCreate = new Picqer\BolPlazaClient\Entities\BolPlazaOfferCreate();
         $offerCreate->EAN = '0619659077013';
         $offerCreate->Condition = 'NEW';
         $offerCreate->Price = '10.00';
@@ -143,7 +143,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testUpdateOffer()
     {
-        $offerUpdate = new Wienkit\BolPlazaClient\Entities\BolPlazaOfferUpdate();
+        $offerUpdate = new Picqer\BolPlazaClient\Entities\BolPlazaOfferUpdate();
         $offerUpdate->Price = '12.00';
         $offerUpdate->DeliveryCode = '24uurs-16';
         $offerUpdate->Publish = 'true';
@@ -154,7 +154,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testUpdateOfferStock()
     {
-        $stockUpdate = new Wienkit\BolPlazaClient\Entities\BolPlazaStockUpdate();
+        $stockUpdate = new Picqer\BolPlazaClient\Entities\BolPlazaStockUpdate();
         $stockUpdate->QuantityInStock = '2';
         return $this->client->updateOfferStock("1", $stockUpdate);
     }

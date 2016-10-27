@@ -1,21 +1,21 @@
 <?php
 
-namespace Wienkit\BolPlazaClient;
+namespace Picqer\BolPlazaClient;
 
-use Wienkit\BolPlazaClient\Entities\BolPlazaReturnItem;
-use Wienkit\BolPlazaClient\Entities\BolPlazaReturnItemStatusUpdate;
-use Wienkit\BolPlazaClient\Entities\BolPlazaProcessStatus;
-use Wienkit\BolPlazaClient\Entities\BolPlazaOrderItem;
-use Wienkit\BolPlazaClient\Entities\BolPlazaCancellation;
-use Wienkit\BolPlazaClient\Entities\BolPlazaOfferFile;
-use Wienkit\BolPlazaClient\Entities\BolPlazaShipment;
-use Wienkit\BolPlazaClient\Entities\BolPlazaChangeTransportRequest;
-use Wienkit\BolPlazaClient\Entities\BolPlazaOfferCreate;
-use Wienkit\BolPlazaClient\Entities\BolPlazaOfferUpdate;
-use Wienkit\BolPlazaClient\Entities\BolPlazaShipmentRequest;
-use Wienkit\BolPlazaClient\Entities\BolPlazaStockUpdate;
-use Wienkit\BolPlazaClient\Exceptions\BolPlazaClientException;
-use Wienkit\BolPlazaClient\Exceptions\BolPlazaClientRateLimitException;
+use Picqer\BolPlazaClient\Entities\BolPlazaReturnItem;
+use Picqer\BolPlazaClient\Entities\BolPlazaReturnItemStatusUpdate;
+use Picqer\BolPlazaClient\Entities\BolPlazaProcessStatus;
+use Picqer\BolPlazaClient\Entities\BolPlazaOrderItem;
+use Picqer\BolPlazaClient\Entities\BolPlazaCancellation;
+use Picqer\BolPlazaClient\Entities\BolPlazaOfferFile;
+use Picqer\BolPlazaClient\Entities\BolPlazaShipment;
+use Picqer\BolPlazaClient\Entities\BolPlazaChangeTransportRequest;
+use Picqer\BolPlazaClient\Entities\BolPlazaOfferCreate;
+use Picqer\BolPlazaClient\Entities\BolPlazaOfferUpdate;
+use Picqer\BolPlazaClient\Entities\BolPlazaShipmentRequest;
+use Picqer\BolPlazaClient\Entities\BolPlazaStockUpdate;
+use Picqer\BolPlazaClient\Exceptions\BolPlazaClientException;
+use Picqer\BolPlazaClient\Exceptions\BolPlazaClientRateLimitException;
 
 class BolPlazaClient
 {
@@ -290,7 +290,7 @@ class BolPlazaClient
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 60);
         curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Wienkit BolPlaza PHP Client (wienkit.com)');
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Picqer BolPlaza PHP Client (picqer.com)');
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-type: ' . $contentType,
             'X-BOL-Date: ' . $date,
