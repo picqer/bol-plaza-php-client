@@ -1,5 +1,5 @@
 <?php
 
-namespace Picqer\BolPlazaClient\Exceptions;
+namespace Wienkit\BolPlazaClient\Exceptions;
 
 class BolPlazaClientException extends \Exception {}

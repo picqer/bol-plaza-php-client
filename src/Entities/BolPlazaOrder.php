@@ -3,7 +3,7 @@
 namespace Wienkit\BolPlazaClient\Entities;
 
 /**
- * Class BolPlazaShipment
+ * Class BolPlazaOrder
  * @package Wienkit\BolPlazaClient\Entities
  *
  * @property string $OrderId
@@ -12,25 +12,24 @@ namespace Wienkit\BolPlazaClient\Entities;
  * @property BolPlazaBuyer $Buyer
  * @property array $OrderItems
  */
-class BolPlazaShipment extends BaseModel {
+class BolPlazaOrder extends BaseModel {
 
-    protected $xmlEntityName = 'Shipment';
+    protected $xmlEntityName = 'Order';
 
     protected $attributes = [
-        'ShipmentId',
-        'ShipmentDate',
+        'OrderId',
+        'DateTimeCustomer',
         'DateTimeDropShipper'
     ];
 
     protected $nestedEntities = [
-        'CustomerDetails' => 'BolPlazaShipmentDetails',
-        'Transport' => 'BolPlazaShipmentTransport'
+        'CustomerDetails' => 'BolPlazaCustomerDetails'
     ];
 
     protected $childEntities = [
-        'ShipmentItems' => [
-            'childName' => 'ShipmentItem',
-            'entityClass' => 'BolPlazaShipmentItem'
+        'OrderItems' => [
+            'childName' => 'OrderItem',
+            'entityClass' => 'BolPlazaOrderItem'
         ]
     ];
 }

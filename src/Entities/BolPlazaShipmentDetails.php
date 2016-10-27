@@ -1,24 +1,26 @@
 <?php
 
-namespace Picqer\BolPlazaClient\Entities;
+namespace Wienkit\BolPlazaClient\Entities;
 
 /**
  * Class BolPlazaShipmentDetails
- * @package Picqer\BolPlazaClient\Entities
+ * @package Wienkit\BolPlazaClient\Entities
  *
  * @param string $SalutationCode
- * @param string $FirstName
+ * @param string $Firstname
  * @param string $Surname
  * @param string $Streetname
  * @param string $Housenumber
  * @param string $HousenumberExtended
  * @param string $AddressSupplement
+ * @param string $ExtraAddressInformation
  * @param string $ZipCode
  * @param string $City
  * @param string $CountryCode
  * @param string $Email
- * @param string $Telephone
+ * @param string $DeliveryPhoneNumber
  * @param string $Company
+ * @param string $VatNumber
  */
 class BolPlazaShipmentDetails extends BaseModel {
 
@@ -26,18 +28,20 @@ class BolPlazaShipmentDetails extends BaseModel {
 
     protected $attributes = [
         'SalutationCode',
-        'FirstName',
+        'Firstname',
         'Surname',
         'Streetname',
         'Housenumber',
         'HousenumberExtended',
         'AddressSupplement',
+        'ExtraAddressInformation',
         'ZipCode',
         'City',
         'CountryCode',
         'Email',
-        'Telephone',
-        'Company'
+        'DeliveryPhoneNumber',
+        'Company',
+        'VatNumber'
     ];
 
 }

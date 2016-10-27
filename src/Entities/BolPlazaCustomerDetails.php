@@ -1,17 +1,17 @@
 <?php
 
-namespace Picqer\BolPlazaClient\Entities;
+namespace Wienkit\BolPlazaClient\Entities;
 
 /**
- * Class BolPlazaBuyer
- * @package Picqer\BolPlazaClient\Entities
+ * Class BolPlazaCustomerDetails
+ * @package Wienkit\BolPlazaClient\Entities
  *
  * @param BolPlazaShipmentDetails $ShipmentDetails
  * @param BolPlazaBillingDetails $BillingDetails
  */
-class BolPlazaBuyer extends BaseModel {
+class BolPlazaCustomerDetails extends BaseModel {
 
-    protected $xmlEntityName = 'Buyer';
+    protected $xmlEntityName = 'CustomerDetails';
 
     protected $attributes = [];
 
