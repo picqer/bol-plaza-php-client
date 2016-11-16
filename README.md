@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/picqer/bol-plaza-php-client.svg?branch=v2)](https://travis-ci.org/picqer/bol-plaza-php-client)
+
+
 # Bol.com Plaza API client for PHP
 This is an open source PHP client for the [Bol.com Plaza API](https://developers.bol.com/documentatie/plaza-api/).
 
