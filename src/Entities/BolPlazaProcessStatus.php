@@ -26,6 +26,7 @@ class BolPlazaProcessStatus extends BaseModel {
         'eventType',
         'description',
         'status',
+        'errorMessage',
         'createTimestamp'
     ];
 }
