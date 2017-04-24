@@ -15,10 +15,17 @@
     {
       "name": "Casper Bakker",
       "email": "info@picqer.com"
+    },
+    {
+      "name": "Mark Wienk",
+      "email": "info@wienkit.com"
     }
   ],
   "require": {
     "php": ">=5.5.9"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
   },
   "autoload": {
     "psr-4": {

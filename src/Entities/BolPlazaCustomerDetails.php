@@ -3,15 +3,15 @@
 namespace Picqer\BolPlazaClient\Entities;
 
 /**
- * Class BolPlazaBuyer
+ * Class BolPlazaCustomerDetails
  * @package Picqer\BolPlazaClient\Entities
  *
  * @param BolPlazaShipmentDetails $ShipmentDetails
  * @param BolPlazaBillingDetails $BillingDetails
  */
-class BolPlazaBuyer extends BaseModel {
+class BolPlazaCustomerDetails extends BaseModel {
 
-    protected $xmlEntityName = 'Buyer';
+    protected $xmlEntityName = 'CustomerDetails';
 
     protected $attributes = [];
 

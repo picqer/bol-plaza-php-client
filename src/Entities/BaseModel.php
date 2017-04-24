@@ -5,6 +5,7 @@ namespace Picqer\BolPlazaClient\Entities;
 abstract class BaseModel
 {
     protected $xmlEntityName = 'BaseModel';
+    protected $xmlNamespace = '';
 
     /**
      * @var array List of all the attributes of this model
@@ -35,11 +36,6 @@ abstract class BaseModel
      * @var array Storage of all child entities data
      */
     protected $childEntitiesData = [];
-
-    /**
-     * @var array List of attributes that deserve special treatment from XML creator
-     */
-    protected $specialAttributes = [];
 
     public function __construct(array $attributes = [])
     {
@@ -202,40 +198,10 @@ abstract class BaseModel
     }
 
     /**
-     * Get the plural of the XML entity name for building XML groups
-     * @return array|null|string
+     * Get the XML namespace for building XML
      */
-    public function getXmlEntityPluralName()
+    public function getXmlNamespace()
     {
-        if (isset($this->xmlEntityPluralName))
-        {
-            return $this->xmlEntityPluralName;
-        }
-
-        return $this->xmlEntityName . 's';
-    }
-
-    /**
-     * Check if attribute is special
-     * @param $key
-     * @return bool
-     */
-    public function isSpecialAttribute($key)
-    {
-        return array_key_exists($key, $this->specialAttributes);
-    }
-
-    /**
-     * Get details of special attribute
-     * @param $key
-     * @return null|array
-     */
-    public function getSpecialAttribute($key)
-    {
-        if ( ! $this->isSpecialAttribute($key)) {
-            return null;
-        }
-
-        return $this->specialAttributes[$key];
+        return $this->xmlNamespace;
     }
 }
