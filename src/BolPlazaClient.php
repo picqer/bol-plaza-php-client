@@ -76,7 +76,7 @@ class BolPlazaClient
 
         $url = '/services/rest/orders/' . self::API_VERSION;
 
-        $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept' => 'application/vnd.orders-v2.1+xml']);
+        $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept: application/vnd.orders-v2.1+xml']);
 
         $orders = BolPlazaDataParser::createCollectionFromResponse('BolPlazaOrder', $apiResult);
 
@@ -104,7 +104,7 @@ class BolPlazaClient
         }
 
         $url = '/services/rest/shipments/' . self::API_VERSION;
-        $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept' => 'application/vnd.shipments-v2.1+xml']);
+        $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept: application/vnd.shipments-v2.1+xml']);
         $shipments = BolPlazaDataParser::createCollectionFromResponse('BolPlazaShipment', $apiResult);
         return $shipments;
     }
@@ -187,7 +187,7 @@ class BolPlazaClient
     {
         $url = '/services/rest/shipments/' . self::API_VERSION;
         $xmlData = BolPlazaDataParser::createXmlFromEntity($shipmentRequest, 'v2.1');
-        $apiResult = $this->makeRequest('POST', $url, $xmlData, ['Accept' => 'application/vnd.shipments-v2.1+xml']);
+        $apiResult = $this->makeRequest('POST', $url, $xmlData, ['Accept: application/vnd.shipments-v2.1+xml']);
         $result = BolPlazaDataParser::createEntityFromResponse('BolPlazaProcessStatus', $apiResult);
         return $result;
     }
