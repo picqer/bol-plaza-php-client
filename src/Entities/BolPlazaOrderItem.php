@@ -16,6 +16,7 @@ namespace Picqer\BolPlazaClient\Entities;
  * @param string $TransactionFee
  * @param string $OfferCondition
  * @param string $CancelRequest
+ * @param string $FulfilmentMethod
  */
 class BolPlazaOrderItem extends BaseModel {
 

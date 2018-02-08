@@ -70,14 +70,14 @@ class BolPlazaClient
     public function getOrders($page = 1, $fulfilmentMethod = 'FBR')
     {
         $parameters = [
-            'page' => $page, '
-            fulfilment-method' => $fulfilmentMethod
+            'page' => $page, 
+            'fulfilment-method' => $fulfilmentMethod
         ];
 
         $url = '/services/rest/orders/' . self::API_VERSION;
 
         $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept: application/vnd.orders-v2.1+xml']);
-
+        
         $orders = BolPlazaDataParser::createCollectionFromResponse('BolPlazaOrder', $apiResult);
 
         return $orders;
@@ -326,13 +326,9 @@ class BolPlazaClient
         if (in_array($method, ['POST', 'PUT', 'DELETE']) && ! is_null($data)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         } elseif ($method == 'GET' && !empty($data)) {
-            $suffix = "?";
-            foreach ($data as $key => $value) {
-              $suffix .= $key . '=' . $value;
-            }
-            curl_setopt($ch, CURLOPT_URL, $url . $suffix);
+            curl_setopt($ch, CURLOPT_URL, $url . '?' . http_build_query($data));
         }
-
+        
         if ($this->skipSslVerification) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);

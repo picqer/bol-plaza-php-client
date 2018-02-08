@@ -8,7 +8,6 @@ namespace Picqer\BolPlazaClient\Entities;
  *
  * @property string $OrderItemId
  * @property string ShipmentReference
- * @property string DateTime
  * @property BolPlazaTransport $Transport
  */
 class BolPlazaShipmentRequest extends BaseModel {
