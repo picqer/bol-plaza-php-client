@@ -316,6 +316,7 @@ class BolPlazaClient
         ]);
 
         $httpRequest = $this->createHttpRequest($url);
+
         $httpRequest->setOption(CURLOPT_CUSTOMREQUEST, $method);
         $httpRequest->setOption(CURLOPT_RETURNTRANSFER, true);
         $httpRequest->setOption(CURLOPT_TIMEOUT, 60);
@@ -384,13 +385,13 @@ class BolPlazaClient
     /**
      * Check if the API returned any errors
      *
-     * @param HttpRequest $httpRequest
+     * @param CurlHttpRequest $httpRequest
      * @param array $headerInfo
      * @param string $result
      * @throws BolPlazaClientException
      * @throws BolPlazaClientRateLimitException
      */
-    protected function checkForErrors(HttpRequest $httpRequest, $headerInfo, $result)
+    protected function checkForErrors(CurlHttpRequest $httpRequest, $headerInfo, $result)
     {
         if ($httpRequest->getErrorNumber()) {
             throw new BolPlazaClientException($httpRequest->getErrorNumber());

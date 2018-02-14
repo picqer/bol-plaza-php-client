@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Shipments xmlns="https://plazaapi.bol.com/services/xsd/v2/plazaapi.xsd">
+    <Shipment>
+        <ShipmentId> </ShipmentId>
+        <ShipmentDate> </ShipmentDate>
+        <ShipmentItems>
+            <ShipmentItem>
+                <OrderItem>
+                    <OrderItemId> </OrderItemId>
+                    <OrderId> </OrderId>
+                    <OrderDate> </OrderDate>
+                    <LatestDeliveryDate> </LatestDeliveryDate>
+                    <EAN> </EAN>
+                    <Title> </Title>
+                    <Quantity> </Quantity>
+                    <OfferPrice> </OfferPrice>
+                    <OfferCondition> </OfferCondition>
+                    <OfferReference> </OfferReference>
+                    <FulfilmentMethod> </FulfilmentMethod>
+                </OrderItem>
+            </ShipmentItem>
+        </ShipmentItems>
+        <Transport>
+            <TransportId> </TransportId>
+            <TransporterCode> </TransporterCode>
+        </Transport>
+        <CustomerDetails>
+            <SalutationCode> </SalutationCode>
+            <Firstname> </Firstname>
+            <Surname> </Surname>
+            <Streetname> </Streetname>
+            <Housenumber> </Housenumber>
+            <ZipCode> </ZipCode>
+            <City> </City>
+            <CountryCode> </CountryCode>
+            <Email> </Email>
+        </CustomerDetails>
+    </Shipment>
+</Shipments>
