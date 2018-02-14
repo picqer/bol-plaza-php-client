@@ -1,21 +1,19 @@
 <?php
 
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Picqer\BolPlazaClient\BolPlazaClient;
 use Picqer\BolPlazaClient\Request\CurlHttpRequest;
 
-class BolPlazaClientTest extends TestCase
+class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var BolPlazaClient|MockObject
+     * @var BolPlazaClient|PHPUnit_Framework_MockObject_MockObject
      */
     private $clientWithMockedHttpRequest;
 
     /** @var BolPlazaClient */
     private $client;
 
-    /** @var CurlHttpRequest|MockObject */
+    /** @var CurlHttpRequest|PHPUnit_Framework_MockObject_MockObject */
     private $httpRequestMock;
 
     public function setUp()
@@ -129,6 +127,8 @@ class BolPlazaClientTest extends TestCase
      */
     public function testChangeTransport(array $shipments)
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $shipment = $shipments[0];
         $changeRequest = new Picqer\BolPlazaClient\Entities\BolPlazaChangeTransportRequest();
         $changeRequest->TransporterCode = '3SNEW941245';
@@ -153,6 +153,8 @@ class BolPlazaClientTest extends TestCase
 
     public function testCreateOffer()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $offerCreate = new Picqer\BolPlazaClient\Entities\BolPlazaOfferCreate();
         $offerCreate->EAN = '0619659077013';
         $offerCreate->Condition = 'NEW';
@@ -167,6 +169,8 @@ class BolPlazaClientTest extends TestCase
 
     public function testUpdateOffer()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $offerUpdate = new Picqer\BolPlazaClient\Entities\BolPlazaOfferUpdate();
         $offerUpdate->Price = '12.00';
         $offerUpdate->DeliveryCode = '24uurs-16';
@@ -178,6 +182,8 @@ class BolPlazaClientTest extends TestCase
 
     public function testUpdateOfferStock()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $stockUpdate = new Picqer\BolPlazaClient\Entities\BolPlazaStockUpdate();
         $stockUpdate->QuantityInStock = '2';
         return $this->client->updateOfferStock("1", $stockUpdate);
@@ -185,11 +191,15 @@ class BolPlazaClientTest extends TestCase
 
     public function testDeleteOffer()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         return $this->client->deleteOffer("1");
     }
 
     public function testGetOwnOffers()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $result = $this->client->getOwnOffers();
         $this->assertEquals($result->Url, 'https://test-plazaapi.bol.com/offers/v1/export/offers.csv');
         return $result->Url;
@@ -201,6 +211,8 @@ class BolPlazaClientTest extends TestCase
      */
     public function testGetOwnOffersResult($url)
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $result = $this->client->getOwnOffersResult($url);
         self::assertNotNull($result);
         self::assertStringStartsWith("OfferId,", $result);
