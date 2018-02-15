@@ -26,7 +26,9 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
         $this->client->setTestMode(true);
 
         // Set client with mock request class
-        $this->httpRequestMock = $this->createMock(CurlHttpRequest::class);
+        $this->httpRequestMock = $this->getMockBuilder(CurlHttpRequest::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->clientWithMockedHttpRequest = $this
             ->getMockBuilder(BolPlazaClient::class)
             ->setConstructorArgs([$publicKey, $privateKey])
