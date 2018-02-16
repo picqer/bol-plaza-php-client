@@ -150,11 +150,15 @@ class BolPlazaDataParser
      * Create XML string for an entity
      *
      * @param BaseModel $entity
+     * @param string $version
      * @return mixed
      */
-    public static function createXmlFromEntity($entity)
+    public static function createXmlFromEntity($entity, $version = 'v2')
     {
-        return self::createNamespacedXmlFromEntity('https://plazaapi.bol.com/services/xsd/v2/plazaapi.xsd', $entity);
+        return self::createNamespacedXmlFromEntity(
+            sprintf('https://plazaapi.bol.com/services/xsd/%s/plazaapi.xsd', $version),
+            $entity
+        );
     }
 
     /**

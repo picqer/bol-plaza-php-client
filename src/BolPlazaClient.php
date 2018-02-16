@@ -2,20 +2,21 @@
 
 namespace Picqer\BolPlazaClient;
 
-use Picqer\BolPlazaClient\Entities\BolPlazaReturnItem;
-use Picqer\BolPlazaClient\Entities\BolPlazaReturnItemStatusUpdate;
-use Picqer\BolPlazaClient\Entities\BolPlazaProcessStatus;
-use Picqer\BolPlazaClient\Entities\BolPlazaOrderItem;
 use Picqer\BolPlazaClient\Entities\BolPlazaCancellation;
-use Picqer\BolPlazaClient\Entities\BolPlazaOfferFile;
-use Picqer\BolPlazaClient\Entities\BolPlazaShipment;
 use Picqer\BolPlazaClient\Entities\BolPlazaChangeTransportRequest;
 use Picqer\BolPlazaClient\Entities\BolPlazaOfferCreate;
+use Picqer\BolPlazaClient\Entities\BolPlazaOfferFile;
 use Picqer\BolPlazaClient\Entities\BolPlazaOfferUpdate;
+use Picqer\BolPlazaClient\Entities\BolPlazaOrderItem;
+use Picqer\BolPlazaClient\Entities\BolPlazaProcessStatus;
+use Picqer\BolPlazaClient\Entities\BolPlazaReturnItem;
+use Picqer\BolPlazaClient\Entities\BolPlazaReturnItemStatusUpdate;
+use Picqer\BolPlazaClient\Entities\BolPlazaShipment;
 use Picqer\BolPlazaClient\Entities\BolPlazaShipmentRequest;
 use Picqer\BolPlazaClient\Entities\BolPlazaStockUpdate;
 use Picqer\BolPlazaClient\Exceptions\BolPlazaClientException;
 use Picqer\BolPlazaClient\Exceptions\BolPlazaClientRateLimitException;
+use Picqer\BolPlazaClient\Request\CurlHttpRequest;
 
 class BolPlazaClient
 {
@@ -61,13 +62,23 @@ class BolPlazaClient
 
     /**
      * Get list of orders
+     * @param int $page
+     * @param string $fulfilmentMethod
      * @return array
+     * @throws BolPlazaClientException
+     * @throws BolPlazaClientRateLimitException
      */
-    public function getOrders()
+    public function getOrders($page = 1, $fulfilmentMethod = 'FBR')
     {
+        $parameters = [
+            'page' => $page,
+            'fulfilment-method' => $fulfilmentMethod
+        ];
+
         $url = '/services/rest/orders/' . self::API_VERSION;
 
-        $apiResult = $this->makeRequest('GET', $url);
+        $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept: application/vnd.orders-v2.1+xml']);
+
         $orders = BolPlazaDataParser::createCollectionFromResponse('BolPlazaOrder', $apiResult);
 
         return $orders;
@@ -76,12 +87,25 @@ class BolPlazaClient
     /**
      * Get list of shipments
      * @param int $page The page of the set of shipments
+     * @param string $fulfilmentMethod
+     * @param string|null $orderId
      * @return array
+     * @throws BolPlazaClientException
+     * @throws BolPlazaClientRateLimitException
      */
-    public function getShipments($page = 1)
+    public function getShipments($page = 1, $fulfilmentMethod = 'FBR', $orderId = null)
     {
+        $parameters = [
+            'page' => $page,
+            'fulfilment-method' => $fulfilmentMethod,
+        ];
+
+        if ($orderId) {
+            $parameters['order-id'] = $orderId;
+        }
+
         $url = '/services/rest/shipments/' . self::API_VERSION;
-        $apiResult = $this->makeRequest('GET', $url, array("page" => $page));
+        $apiResult = $this->makeRequest('GET', $url, $parameters, ['Accept: application/vnd.shipments-v2.1+xml']);
         $shipments = BolPlazaDataParser::createCollectionFromResponse('BolPlazaShipment', $apiResult);
         return $shipments;
     }
@@ -163,8 +187,8 @@ class BolPlazaClient
     public function processShipment(Entities\BolPlazaShipmentRequest $shipmentRequest)
     {
         $url = '/services/rest/shipments/' . self::API_VERSION;
-        $xmlData = BolPlazaDataParser::createXmlFromEntity($shipmentRequest);
-        $apiResult = $this->makeRequest('POST', $url, $xmlData);
+        $xmlData = BolPlazaDataParser::createXmlFromEntity($shipmentRequest, 'v2.1');
+        $apiResult = $this->makeRequest('POST', $url, $xmlData, ['Accept: application/vnd.shipments-v2.1+xml']);
         $result = BolPlazaDataParser::createEntityFromResponse('BolPlazaProcessStatus', $apiResult);
         return $result;
     }
@@ -272,11 +296,12 @@ class BolPlazaClient
      * @param string $method GET
      * @param string $endpoint URI of the resource
      * @param null|string $data POST data
+     * @param array $additionalHeaders additional headers (optional)
      * @return string XML
      * @throws BolPlazaClientException
      * @throws BolPlazaClientRateLimitException
      */
-    protected function makeRequest($method = 'GET', $endpoint, $data = null)
+    protected function makeRequest($method = 'GET', $endpoint, $data = null, $additionalHeaders = [])
     {
         $date = gmdate('D, d M Y H:i:s T');
         $contentType = 'application/xml';
@@ -284,40 +309,38 @@ class BolPlazaClient
 
         $signature = $this->getSignature($method, $contentType, $date, $endpoint);
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Picqer BolPlaza PHP Client (picqer.com)');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        $headers = array_merge($additionalHeaders, [
             'Content-type: ' . $contentType,
             'X-BOL-Date: ' . $date,
             'X-BOL-Authorization: ' . $signature
         ]);
 
+        $httpRequest = $this->createHttpRequest($url);
+
+        $httpRequest->setOption(CURLOPT_CUSTOMREQUEST, $method);
+        $httpRequest->setOption(CURLOPT_RETURNTRANSFER, true);
+        $httpRequest->setOption(CURLOPT_TIMEOUT, 60);
+        $httpRequest->setOption(CURLOPT_HEADER, false);
+        $httpRequest->setOption(CURLOPT_USERAGENT, 'Picqer BolPlaza PHP Client (picqer.com)');
+        $httpRequest->setOption(CURLOPT_HTTPHEADER, $headers);
+
         if (in_array($method, ['POST', 'PUT', 'DELETE']) && ! is_null($data)) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            $httpRequest->setOption(CURLOPT_POSTFIELDS, $data);
         } elseif ($method == 'GET' && !empty($data)) {
-            $suffix = "?";
-            foreach ($data as $key => $value) {
-              $suffix .= $key . '=' . $value;
-            }
-            curl_setopt($ch, CURLOPT_URL, $url . $suffix);
+            $httpRequest->setOption(CURLOPT_URL, $url . '?' . http_build_query($data));
         }
 
         if ($this->skipSslVerification) {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            $httpRequest->setOption(CURLOPT_SSL_VERIFYPEER, false);
+            $httpRequest->setOption(CURLOPT_SSL_VERIFYHOST, false);
         }
 
-        $result = curl_exec($ch);
-        $headerInfo = curl_getinfo($ch);
+        $result = $httpRequest->execute();
+        $headerInfo = $httpRequest->getInfo();
 
-        $this->checkForErrors($ch, $headerInfo, $result);
+        $this->checkForErrors($httpRequest, $headerInfo, $result);
 
-        curl_close($ch);
+        $httpRequest->close();
 
         return $result;
     }
@@ -362,16 +385,16 @@ class BolPlazaClient
     /**
      * Check if the API returned any errors
      *
-     * @param resource $ch The CURL resource of the request
+     * @param CurlHttpRequest $httpRequest
      * @param array $headerInfo
      * @param string $result
      * @throws BolPlazaClientException
      * @throws BolPlazaClientRateLimitException
      */
-    protected function checkForErrors($ch, $headerInfo, $result)
+    protected function checkForErrors(CurlHttpRequest $httpRequest, $headerInfo, $result)
     {
-        if (curl_errno($ch)) {
-            throw new BolPlazaClientException(curl_errno($ch));
+        if ($httpRequest->getErrorNumber()) {
+            throw new BolPlazaClientException($httpRequest->getErrorNumber());
         }
 
         if ( ! in_array($headerInfo['http_code'], array('200', '201', '204'))) // API returns error
@@ -388,5 +411,14 @@ class BolPlazaClient
                 }
             }
         }
+    }
+
+    /**
+     * @param string $url
+     * @return CurlHttpRequest
+     */
+    protected function createHttpRequest($url)
+    {
+        return new CurlHttpRequest($url);
     }
 }

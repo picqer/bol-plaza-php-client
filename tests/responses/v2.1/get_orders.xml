@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Orders xmlns="https://plazaapi.bol.com/services/xsd/v2/plazaapi.xsd">
+    <Order>
+        <OrderId>4123456789</OrderId>
+        <DateTimeCustomer>2017-02-09T12:39:48.000+01:00</DateTimeCustomer>
+        <DateTimeDropShipper>2017-02-09T12:39:48.000+01:00</DateTimeDropShipper>
+        <CustomerDetails>
+            <ShipmentDetails>
+                <SalutationCode>02</SalutationCode>
+                <Firstname>Billie</Firstname>
+                <Surname>Van der Bol.com</Surname>
+                <Streetname>Dorpstraat</Streetname>
+                <Housenumber>1</Housenumber>
+                <HousenumberExtended>B</HousenumberExtended>
+                <ZipCode>1111 ZZ</ZipCode>
+                <City>Utrecht</City>
+                <CountryCode>NL</CountryCode>
+                <Email>2awq74td4z4mizmx6dcdbsdbdcna@verkopen.bol.com</Email>
+                <Company>bol.com</Company>
+            </ShipmentDetails>
+            <BillingDetails>
+                <SalutationCode>02</SalutationCode>
+                <Firstname>Billie</Firstname>
+                <Surname>van der Bol.com</Surname>
+                <Streetname>Dorpstraat</Streetname>
+                <Housenumber>1</Housenumber>
+                <HousenumberExtended>B</HousenumberExtended>
+                <ZipCode>1111 ZZ</ZipCode>
+                <City>Utrecht</City>
+                <CountryCode>NL</CountryCode>
+                <Email>2awq74td4z4mizmx6dcdbsdbdcna@verkopen.bol.com</Email>
+                <Company>bol.com</Company>
+            </BillingDetails>
+        </CustomerDetails>
+        <OrderItems>
+            <OrderItem>
+                <OrderItemId>2012345678</OrderItemId>
+                <EAN>5412810182312</EAN>
+                <OfferReference>BOLCOM00123</OfferReference>
+                <Title>Basicxl - Rijdende Wekker - Kunststof - 16x11cm - Zwart</Title>
+                <Quantity>1</Quantity>
+                <OfferPrice>27.95</OfferPrice>
+                <TransactionFee>5.18</TransactionFee>
+                <LatestDeliveryDate>2017-02-10+01:00</LatestDeliveryDate>
+                <OfferCondition>NEW</OfferCondition>
+                <CancelRequest>false</CancelRequest>
+                <FulfilmentMethod>FBR</FulfilmentMethod>
+            </OrderItem>
+        </OrderItems>
+    </Order>
+</Orders>

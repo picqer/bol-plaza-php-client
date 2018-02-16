@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns1:ProcessStatus xmlns:ns1="https://plazaapi.bol.com/services/xsd/v2/plazaapi.xsd">
+    <ns1:id>1</ns1:id>
+    <ns1:sellerId>1084486</ns1:sellerId>
+    <ns1:entityId>1234567890</ns1:entityId>
+    <ns1:eventType>CONFIRM_SHIPMENT</ns1:eventType>
+    <ns1:description>Confirm shipment for order item 1234567890.</ns1:description>
+    <ns1:status>PENDING</ns1:status>
+    <ns1:createTimestamp>2016-02-17T17:30:00.142+01:00</ns1:createTimestamp>
+    <ns1:Links>
+        <ns1:link ns1:method="GET" ns1:href="https://plazaapi.bol.com/services/rest/process-status/v2/1234567" ns1:rel="self"/>
+    </ns1:Links>
+</ns1:ProcessStatus>

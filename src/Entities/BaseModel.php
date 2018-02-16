@@ -95,6 +95,13 @@ abstract class BaseModel
         }
     }
 
+    public function __isset($key)
+    {
+        return $this->attributeExists($key)
+            || $this->childEntityExists($key)
+            || $this->nestedEntityExists($key);
+    }
+
     /**
      * Check if an attribute key exists
      *

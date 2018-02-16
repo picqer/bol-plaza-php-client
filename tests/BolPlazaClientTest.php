@@ -1,23 +1,49 @@
 <?php
+
+use Picqer\BolPlazaClient\BolPlazaClient;
+use Picqer\BolPlazaClient\Request\CurlHttpRequest;
+
 class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var Picqer\BolPlazaClient\BolPlazaClient
+     * @var BolPlazaClient|PHPUnit_Framework_MockObject_MockObject
      */
+    private $clientWithMockedHttpRequest;
+
+    /** @var BolPlazaClient */
     private $client;
+
+    /** @var CurlHttpRequest|PHPUnit_Framework_MockObject_MockObject */
+    private $httpRequestMock;
 
     public function setUp()
     {
         $publicKey = getenv('PHP_PUBKEY');
         $privateKey = getenv('PHP_PRIVKEY');
 
-        $this->client = new Picqer\BolPlazaClient\BolPlazaClient($publicKey, $privateKey);
+        // Set regular client which connects to bol.com test env.
+        $this->client = new BolPlazaClient($publicKey, $privateKey);
         $this->client->setTestMode(true);
+
+        // Set client with mock request class
+        $this->httpRequestMock = $this->getMockBuilder(CurlHttpRequest::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->clientWithMockedHttpRequest = $this
+            ->getMockBuilder(BolPlazaClient::class)
+            ->setConstructorArgs([$publicKey, $privateKey])
+            ->setMethods(['createHttpRequest'])
+            ->getMock();
+        $this->clientWithMockedHttpRequest->expects($this->any())
+            ->method('createHttpRequest')
+            ->willReturn($this->httpRequestMock);
+        $this->clientWithMockedHttpRequest->setTestMode(true);
     }
 
     public function testOrderRetrieve()
     {
-        $orders = $this->client->getOrders();
+        $this->setupMockResponse('v2.1/get_orders');
+        $orders = $this->clientWithMockedHttpRequest->getOrders();
         $this->assertNotEmpty($orders);
         return $orders;
     }
@@ -28,14 +54,10 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
      */
     public function testOrdersComplete(array $orders)
     {
-        $this->assertEquals(count($orders), 2);
-        $this->assertEquals(count($orders[0]->OrderItems), 1);
-        $this->assertEquals($orders[0]->OrderItems[0]->OrderItemId, '123');
-        $this->assertEquals($orders[0]->CustomerDetails->ShipmentDetails->HousenumberExtended, 'bis');
-        $this->assertEquals($orders[0]->CustomerDetails->ShipmentDetails->AddressSupplement, '3 hoog achter');
-        $this->assertEquals($orders[0]->CustomerDetails->ShipmentDetails->ExtraAddressInformation, 'extra adres info');
-        $this->assertEquals(count($orders[1]->OrderItems), 1);
-        $this->assertEquals($orders[1]->OrderItems[0]->OrderItemId, '123');
+        $this->assertEquals(1, count($orders));
+        $this->assertEquals(1, count($orders[0]->OrderItems));
+        $this->assertEquals('2012345678', $orders[0]->OrderItems[0]->OrderItemId);
+        $this->assertEquals('B', $orders[0]->CustomerDetails->ShipmentDetails->HousenumberExtended);;
     }
 
     /**
@@ -54,6 +76,7 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testProcessShipments()
     {
+        $this->setupMockResponse('v2.1/process_shipments');
         $shipment = new Picqer\BolPlazaClient\Entities\BolPlazaShipmentRequest();
         $shipment->OrderItemId = '123';
         $shipment->ShipmentReference = 'bolplazatest123';
@@ -63,14 +86,15 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
         $transport->TransporterCode = 'GLS';
         $transport->TrackAndTrace = '123456789';
         $shipment->Transport = $transport;
-        $result = $this->client->processShipment($shipment);
+        $result = $this->clientWithMockedHttpRequest->processShipment($shipment);
         $this->assertEquals($result->eventType, 'CONFIRM_SHIPMENT');
     }
 
     public function testGetShipments()
     {
-        $shipments = $this->client->getShipments();
-        $this->assertEquals(count($shipments), 2);
+        $this->setupMockResponse('v2.1/get_shipments');
+        $shipments = $this->clientWithMockedHttpRequest->getShipments();
+        $this->assertEquals(1, count($shipments));
         return $shipments;
     }
 
@@ -105,6 +129,8 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
      */
     public function testChangeTransport(array $shipments)
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $shipment = $shipments[0];
         $changeRequest = new Picqer\BolPlazaClient\Entities\BolPlazaChangeTransportRequest();
         $changeRequest->TransporterCode = '3SNEW941245';
@@ -129,6 +155,8 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testCreateOffer()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $offerCreate = new Picqer\BolPlazaClient\Entities\BolPlazaOfferCreate();
         $offerCreate->EAN = '0619659077013';
         $offerCreate->Condition = 'NEW';
@@ -143,6 +171,8 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testUpdateOffer()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $offerUpdate = new Picqer\BolPlazaClient\Entities\BolPlazaOfferUpdate();
         $offerUpdate->Price = '12.00';
         $offerUpdate->DeliveryCode = '24uurs-16';
@@ -154,6 +184,8 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testUpdateOfferStock()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $stockUpdate = new Picqer\BolPlazaClient\Entities\BolPlazaStockUpdate();
         $stockUpdate->QuantityInStock = '2';
         return $this->client->updateOfferStock("1", $stockUpdate);
@@ -161,11 +193,15 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
 
     public function testDeleteOffer()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         return $this->client->deleteOffer("1");
     }
 
     public function testGetOwnOffers()
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $result = $this->client->getOwnOffers();
         $this->assertEquals($result->Url, 'https://test-plazaapi.bol.com/offers/v1/export/offers.csv');
         return $result->Url;
@@ -177,8 +213,17 @@ class BolPlazaClientTest extends PHPUnit_Framework_TestCase
      */
     public function testGetOwnOffersResult($url)
     {
+        $this->markTestSkipped('Skipped because of incomplete bol.com test environment');
+
         $result = $this->client->getOwnOffersResult($url);
         self::assertNotNull($result);
         self::assertStringStartsWith("OfferId,", $result);
+    }
+
+    private function setupMockResponse($path)
+    {
+        $this->httpRequestMock->expects($this->any())
+            ->method('execute')
+            ->willReturn(file_get_contents(__DIR__ . '/responses/' . $path . '.xml'));
     }
 }

@@ -12,10 +12,11 @@ namespace Picqer\BolPlazaClient\Entities;
  * @param string $Title
  * @param string $Quantity
  * @param string $OfferPrice
- * @param string $PromisedDeliveryDate
+ * @param string $LatestDeliveryDate
  * @param string $TransactionFee
  * @param string $OfferCondition
  * @param string $CancelRequest
+ * @param string $FulfilmentMethod
  */
 class BolPlazaOrderItem extends BaseModel {
 
@@ -29,9 +30,10 @@ class BolPlazaOrderItem extends BaseModel {
         'Quantity',
         'OfferPrice',
         'TransactionFee',
-        'PromisedDeliveryDate',
+        'LatestDeliveryDate',
         'OfferCondition',
-        'CancelRequest'
+        'CancelRequest',
+        'FulfilmentMethod',
     ];
 
 }
