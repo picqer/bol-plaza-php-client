@@ -7,6 +7,7 @@ use Picqer\BolPlazaClient\Entities\BolPlazaChangeTransportRequest;
 use Picqer\BolPlazaClient\Entities\BolPlazaOfferCreate;
 use Picqer\BolPlazaClient\Entities\BolPlazaOfferFile;
 use Picqer\BolPlazaClient\Entities\BolPlazaOfferUpdate;
+use Picqer\BolPlazaClient\Entities\BolPlazaOrder;
 use Picqer\BolPlazaClient\Entities\BolPlazaOrderItem;
 use Picqer\BolPlazaClient\Entities\BolPlazaProcessStatus;
 use Picqer\BolPlazaClient\Entities\BolPlazaReturnItem;
@@ -82,6 +83,24 @@ class BolPlazaClient
         $orders = BolPlazaDataParser::createCollectionFromResponse('BolPlazaOrder', $apiResult);
 
         return $orders;
+    }
+
+    /**
+     * Get single order
+     * @param string $orderId
+     * @return BolPlazaOrder|null
+     * @throws BolPlazaClientException
+     * @throws BolPlazaClientRateLimitException
+     */
+    public function getOrder($orderId)
+    {
+        $url = sprintf('/services/rest/orders/%s/%s', self::API_VERSION, $orderId);
+
+        $apiResult = $this->makeRequest('GET', $url, null, ['Accept: application/vnd.orders-v2.1+xml']);
+
+        $order = BolPlazaDataParser::createCollectionFromResponse('BolPlazaOrder', $apiResult);
+
+        return isset($order[0]) ? $order[0] : null;
     }
 
     /**
