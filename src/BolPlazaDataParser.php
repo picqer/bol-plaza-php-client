@@ -86,9 +86,9 @@ class BolPlazaDataParser
     public static function parseXmlResponse($xmlString, $namespace = '')
     {
         $document = new SimpleXMLElement($xmlString);
-        if(!empty($namespace)) {
-          $namespaces = $document->getNamespaces(true);
-          return $document->children($namespaces[$namespace]);
+        if (! empty($namespace)) {
+            $namespaces = $document->getNamespaces(true);
+            return $document->children(isset($namespaces[$namespace]) ? $namespaces[$namespace] : null);
         }
         return $document->children();
     }
