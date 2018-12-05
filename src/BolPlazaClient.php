@@ -416,18 +416,30 @@ class BolPlazaClient
             throw new BolPlazaClientException($httpRequest->getErrorNumber());
         }
 
-        if ( ! in_array($headerInfo['http_code'], array('200', '201', '204'))) // API returns error
+        if (! in_array($headerInfo['http_code'], array('200', '201', '204'))) // API returns error
         {
-            if ($headerInfo['http_code'] == '409')
-            {
+            if ($headerInfo['http_code'] == '409') {
                 throw new BolPlazaClientRateLimitException;
             }
-            if(!empty($result)) {
-                $xmlObject = BolPlazaDataParser::parseXmlResponse($result);
-                if (isset($xmlObject->ErrorCode) && !empty($xmlObject->ErrorCode))
-                {
-                    throw new BolPlazaClientException($xmlObject->ErrorMessage, (int)$xmlObject->ErrorCode);
-                }
+
+            if (! empty($result)) {
+                $this->extractExceptionFromResponse($result);
+            }
+        }
+    }
+
+    /**
+     * @param string $result
+     * @throws BolPlazaClientException
+     */
+    protected function extractExceptionFromResponse($result)
+    {
+        // Documentation does not show namespaces but (error)response contains "bns" namespace, try both to stay backwards compatible
+        $namespaces = array('', 'bns');
+        foreach($namespaces as $namespace) {
+            $xmlObject = BolPlazaDataParser::parseXmlResponse($result, $namespace);
+            if (isset($xmlObject->ErrorCode) && ! empty($xmlObject->ErrorCode)) {
+                throw new BolPlazaClientException($xmlObject->ErrorMessage, (int)$xmlObject->ErrorCode);
             }
         }
     }
