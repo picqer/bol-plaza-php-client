@@ -4,6 +4,9 @@
 # Bol.com Plaza API client for PHP
 This is an open source PHP client for the [Bol.com Plaza API](https://developers.bol.com/documentatie/plaza-api/).
 
+## DEPRECATED!
+Watch out, the Plaza API of Bol.com will be discontinued in April 2020. The new API is the Bol Retailer API. We build a brand new client for this API, you can find it at https://github.com/picqer/bol-retailer-php-client.
+
 ## Installation
 Get it with [composer](https://getcomposer.org)
 
