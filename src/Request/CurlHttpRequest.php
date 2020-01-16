@@ -23,7 +23,7 @@ class CurlHttpRequest
 
     public function getInfo($option = null)
     {
-        if($opt) {
+        if($option) {
             return curl_getinfo($this->ch, $option);
         } else {
             return curl_getinfo($this->ch);
