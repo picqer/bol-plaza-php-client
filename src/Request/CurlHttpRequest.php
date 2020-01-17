@@ -23,6 +23,10 @@ class CurlHttpRequest
 
     public function getInfo($option = null)
     {
+        if (is_null($option)) {
+            return curl_getinfo($this->ch);
+        }
+        
         return curl_getinfo($this->ch, $option);
     }
 
